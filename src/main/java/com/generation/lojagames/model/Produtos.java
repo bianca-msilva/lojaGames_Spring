@@ -1,16 +1,21 @@
 package com.generation.lojagames.model;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 import org.hibernate.annotations.UpdateTimestamp;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
 
@@ -46,11 +51,15 @@ public class Produtos {
 	private Boolean usado;
 	
 	@Positive(message = "O Preço deve ser um valor positivo (>0)!")
-	@NotBlank(message = "O Atributo Preço é obrigatório!")
-	private Long preco;
+	@NotNull(message = "O Atributo Preço é obrigatório!")
+	private BigDecimal preco;
 	
 	@UpdateTimestamp
 	private LocalDateTime data;
+	
+	@ManyToOne
+	@JsonIgnoreProperties("produto")
+	private Categoria categoria;
 
 	public Long getId() {
 		return id;
@@ -108,11 +117,12 @@ public class Produtos {
 		this.usado = usado;
 	}
 
-	public Long getPreco() {
+
+	public BigDecimal getPreco() {
 		return preco;
 	}
 
-	public void setPreco(Long preco) {
+	public void setPreco(BigDecimal preco) {
 		this.preco = preco;
 	}
 
@@ -122,6 +132,14 @@ public class Produtos {
 
 	public void setData(LocalDateTime data) {
 		this.data = data;
+	}
+
+	public Categoria getCategoria() {
+		return categoria;
+	}
+
+	public void setCategoria(Categoria categoria) {
+		this.categoria = categoria;
 	}
 	
 	
